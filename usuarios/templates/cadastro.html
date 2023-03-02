@@ -6,43 +6,42 @@ Cadastro
 {% endblock%}
 
 {% block 'body' %}
+
 <div class="container">
-    
+<br>
+ {% if status == '1' %}
+<div class="alert alert-danger" role="alert">
+    E-mail já cadastrado no sistema
+    </div>
+{% endif %}
+
+{% if status == '2' %}
+<div class="alert alert-danger" role="alert">
+    Nome e Email não podem ser vazios
+    </div>
+{% endif %}
+
+{% if status == '3' %}
+<div class="alert alert-danger" role="alert">
+    Senha deve conter no mínimo 8 caracteres
+    </div>
+{% endif %}
+
+{% if status == '4' %}
+<div class="alert alert-danger" role="alert">
+    Erro interno do sistema
+    </div>
+{% endif %}
+
+{% if status == '0' %}
+<div class="alert alert-success" role="alert">
+    Cadastro confirmado com sucesso
+    </div>
+{% endif %}    
   <div class="row">
       <div class="col-md-3">
-        <br>
-         {% if status == '1' %}
-            <div class="alert alert-danger" role="alert">
-                E-mail já cadastrado no sistema
-                </div>
-            {% endif %}
-
-            {% if status == '2' %}
-            <div class="alert alert-danger" role="alert">
-                Nome e Email não podem ser vazios
-                </div>
-            {% endif %}
-
-            {% if status == '3' %}
-            <div class="alert alert-danger" role="alert">
-                Senha deve conter no mínimo 8 caracteres
-                </div>
-            {% endif %}
-
-            {% if status == '4' %}
-            <div class="alert alert-danger" role="alert">
-                Erro interno do sistema
-                </div>
-            {% endif %}
-
-            {% if status == '0' %}
-            <div class="alert alert-success" role="alert">
-                Cadastro confirmado com sucesso
-                </div>
-            {% endif %}
       </div>
       <div class="col-md">
-          <br>
           <h1>Cadastre-se</h1>
           <hr>
           <form method="POST" action="{% url 'valida_cadastro'%}">{% csrf_token %}
@@ -57,7 +56,7 @@ Cadastro
               <br>
               <input class="btn btn-success btn-lg" type="submit">
               
-              <a href="#" class="btn btn-info btn-lg">Logar</a>
+              <a href="{% url 'login' %}" class="btn btn-info btn-lg">Logar</a>
           </form>
 
            
