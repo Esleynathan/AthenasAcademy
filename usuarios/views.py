@@ -27,13 +27,13 @@ def valida_cadastro(request):
     usuario = Usuario.objects.filter(email = email)
 
     if len(usuario) > 0:
-        return redirect('/cadastro/?status=1')
+        return redirect('/auth/cadastro/?status=1')
     
     if len(nome.strip()) == 0 or len(email.strip()) == 0:
-        return redirect('/cadastro/?status=2')
+        return redirect('/auth/cadastro/?status=2')
     
     if len(senha) < 8:
-        return redirect('/cadastro/?status=3')  
+        return redirect('/auth/cadastro/?status=3')  
     
     try:
         senha = hashlib.sha256(senha.encode()).hexdigest()
@@ -41,9 +41,9 @@ def valida_cadastro(request):
                           email = email,
                           senha = senha)
         usuario.save()
-        return redirect('/cadastro/?status=0')
+        return redirect('/auth/cadastro/?status=0')
     except:
-        return redirect('/cadastro/?status=4')
+        return redirect('/auth/cadastro/?status=4')
     
 def valida_login(request):
     email = request.POST.get('email')
@@ -52,16 +52,11 @@ def valida_login(request):
     usuarios = Usuario.objects.filter(email = email).filter(senha = senha)
 
     if len(usuarios) == 0:
-        return redirect('/login/?status=1')
+        return redirect('/auth/login/?status=1')
     elif len(usuarios) > 0:
         request.session['usuario'] = usuarios[0].id
-        return redirect('/home/')
-    
-  
-def home(request):
-
-    return render(request, 'home.html')
+        return redirect('/home')
 
 def sair(request):
     request.session.flush()
-    return redirect('/login/')
+    return redirect('/auth/login/')
