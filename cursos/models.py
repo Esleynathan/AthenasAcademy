@@ -17,3 +17,12 @@ class Aulas(models.Model):
 
     def __str__(self) -> str:
         return self.nome
+
+class Comentarios(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete = models.DO_NOTHING)
+    comentario = models.TextField()
+    data = models.DateTimeField(default = datetime.now)
+    aula = models.ForeignKey(Aulas, on_delete = models.DO_NOTHING)
+    
+    def __str__(self) -> str:
+        return self.usuario.nome

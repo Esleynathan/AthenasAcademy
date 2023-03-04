@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from . models import Cursos, Aulas
+from . models import Cursos, Aulas, Comentarios
 
 def home(request):
     if request.session.get('usuario'):
@@ -24,4 +24,20 @@ def aula(request, id):
         return render(request, 'aula.html', {'aula': aula})
     else:
         return redirect('/auth/login/?status=2')
-    
+
+def comentarios(request):
+    usuario_id = int(request.POST.get('usuario_id'))
+    comentario = request.POST.get('comentario')
+    aula_id = int(request.POST.get('aula_id'))
+
+    comentario_instancia = Comentarios(usuario_id = usuario_id,
+                                       comentario = comentario,
+                                       aula_id = aula_id)
+    comentario_instancia.save()
+
+    comentarios = Comentarios.objects.filter(aula = aula_id).order_by('-data')
+    somente_nomes = [i.usuario.nome for i in comentarios]
+    somente_comentarios = [i.comentario for i in comentarios]
+    comentarios = list(zip(somente_nomes, somente_comentarios))
+
+    return HttpResponse(json.dumps({'status': '1', 'comentarios': comentarios }))
