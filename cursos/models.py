@@ -1,4 +1,7 @@
 from django.db import models
+from datetime import datetime
+
+from usuarios.models import Usuario
 
 class Cursos(models.Model):
     nome = models.CharField(max_length = 100)
@@ -26,3 +29,16 @@ class Comentarios(models.Model):
     
     def __str__(self) -> str:
         return self.usuario.nome
+
+class NotasAulas(models.Model):
+    choices = (
+        ('p', 'Péssimo'),
+        ('r', 'Ruim'),
+        ('re', 'Regular'),
+        ('b', 'bom'),
+        ('o', 'Ótimo')
+    )
+
+    aula = models.ForeignKey(Aulas, on_delete=models.DO_NOTHING)
+    nota = models.CharField(max_length=50, choices=choices)
+    usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
